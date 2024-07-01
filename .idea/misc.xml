@@ -3,5 +3,5 @@
   <component name="Black">
     <option name="sdkName" value="Python 3.12 (PlateDecetor)" />
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="Poetry (carPlateDetector)" project-jdk-type="Python SDK" />
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.12 (carPlateDetection)" project-jdk-type="Python SDK" />
 </project>
