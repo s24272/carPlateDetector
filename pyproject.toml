@@ -10,11 +10,8 @@ python = "^3.12"
 ultralytics = "^8.2.46"
 matplotlib = "^3.9.0"
 pandas = "^2.2.2"
-tensorflow = "^2.16.2"
 opencv-python = "^4.10.0.84"
-keras = "^3.4.1"
 scikit-learn = "^1.5.0"
-pillow = "^10.4.0"
 
 
 [build-system]
