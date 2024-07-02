@@ -190,7 +190,10 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=20):
+import torch
+from sklearn.metrics import f1_score, precision_score
+
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=22):
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
@@ -215,8 +218,10 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 preds = torch.argmax(outputs, dim=1)
                 all_labels.extend(labels.cpu().numpy())
                 all_preds.extend(preds.cpu().numpy())
+
         f1 = f1_score(all_labels, all_preds, average="micro")
-        print(f"Validation Loss: {val_loss/len(val_loader)}, F1 Score: {f1}")
+        precision = precision_score(all_labels, all_preds, average="micro")
+        print(f"Validation Loss: {val_loss/len(val_loader)}, F1 Score: {f1}, Precision: {precision}")
 
     # Save the model and optimizer state
     torch.save(
@@ -226,6 +231,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         },
         "license_plate_model.pt",
     )
+
 
 
 train_model(model, train_loader, val_loader, criterion, optimizer)
