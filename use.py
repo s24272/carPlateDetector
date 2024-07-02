@@ -8,7 +8,7 @@ from torchvision import transforms
 from main import LicensePlateModel, detect_plate, segment_characters
 
 # Load the model and optimizer state
-checkpoint = torch.load("license_plate_model.pth")
+checkpoint = torch.load("license_plate_model.pt")
 model = LicensePlateModel()
 model.load_state_dict(checkpoint["model_state_dict"])
 model.eval()
@@ -51,7 +51,7 @@ def classify_characters(char_images, model):
 
 
 # Load and process the image
-char_images = detect_and_segment("archive/images/Cars3.png")
+char_images = detect_and_segment("archive/images/Cars5.png")
 
 # Classify the characters
 license_plate = classify_characters(char_images, model)

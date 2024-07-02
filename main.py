@@ -190,7 +190,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=10):
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=20):
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
@@ -224,14 +224,14 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             "model_state_dict": model.state_dict(),
             "optimizer_state_dict": optimizer.state_dict(),
         },
-        "license_plate_model.pth",
+        "license_plate_model.pt",
     )
 
 
 train_model(model, train_loader, val_loader, criterion, optimizer)
 
 # Load the model and optimizer state
-checkpoint = torch.load("license_plate_model.pth")
+checkpoint = torch.load("license_plate_model.pt")
 model.load_state_dict(checkpoint["model_state_dict"])
 optimizer.load_state_dict(checkpoint["optimizer_state_dict"])
 
