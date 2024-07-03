@@ -146,7 +146,7 @@ To use the models, run the training scripts to train the models on the provided 
 
 3. **Set up pre-commit hooks**:
     ```sh
-    poetry run pre-commit install
+    pip install pre-commit
     ```
 
 4. **Run the training scripts**:
