@@ -15,7 +15,6 @@ This project focuses on detecting and recognizing license plates using two appro
 4. [Tools and Environment](#tools-and-environment)
 5. [Usage](#usage)
 6. [Installation](#installation)
-7. [Video Demonstration](#video-demonstration)
 
 ## Dataset
 
