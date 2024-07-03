@@ -1,30 +1,17 @@
-import os
 import cv2
 import shutil
-import numpy as np
-import pandas as pd
-from glob import glob
-import matplotlib.pyplot as plt
 import xml.etree.ElementTree as xet
-from sklearn.model_selection import train_test_split
 import re
-import pytesseract
-from PIL import Image
+import os
+import pandas as pd
+import matplotlib.pyplot as plt
+from glob import glob
 from ultralytics import YOLO
-
+from sklearn.model_selection import train_test_split
 
 # Funkcja do ekstrakcji liczby z nazwy pliku
 def the_number_in_the_string(filename):
-    """
-    Wyodrębnia pierwszą sekwencję cyfr z podanego ciągu nazwy pliku i zwraca ją jako liczbę całkowitą.
-    Jeśli nie znaleziono cyfr, zwraca 0.
 
-    Parameters:
-    filename (str): Ciąg wejściowy, w którym szukamy cyfr.
-
-    Returns:
-    int: Pierwsza znaleziona sekwencja cyfr w ciągu wejściowym lub 0, jeśli nie znaleziono cyfr.
-    """
     # Szukamy pierwszego wystąpienia jednej lub więcej cyfr w nazwie pliku
     match = re.search(r'(\d+)', filename)
 
@@ -105,16 +92,7 @@ print(f'''
 
 # Funkcja do tworzenia struktury folderów w formacie YOLO dla zbioru danych
 def make_split_folder_in_yolo_format(split_name, split_df):
-    """
-    Tworzy strukturę katalogów dla danego podziału zbioru danych (train/val/test) w formacie YOLO.
 
-    Parameters:
-    split_name (str): Nazwa podziału (np. 'train', 'val', 'test').
-    split_df (pd.DataFrame): DataFrame zawierający dane dla danego podziału.
-
-    Funkcja tworzy podkatalogi 'labels' i 'images' w katalogu 'datasets/cars_license_plate/{split_name}',
-    a następnie zapisuje etykiety i obrazy w formacie YOLO.
-    """
     labels_path = os.path.join('datasets', 'cars_license_plate_new', split_name, 'labels')
     images_path = os.path.join('datasets', 'cars_license_plate_new', split_name, 'images')
 
@@ -179,10 +157,6 @@ model.train(
     cache=True  # Caching obrazów dla szybszego treningu
 )
 
-import os
-import pandas as pd
-import matplotlib.pyplot as plt
-from glob import glob
 
 # Znajdujemy najnowszy katalog z logami treningowymi
 log_dir = max(glob('runs/detect/train*'), key=os.path.getmtime)
@@ -210,47 +184,3 @@ plt.show()
 # Zapisujemy wytrenowany model
 model.save('yolo_pretrained_model_by300epochs.pt')
 
-# Funkcja do przewidywania i wyświetlania bounding boxów na obrazie testowym
-def predict_and_plot(path_test_car):
-    """
-    Przewiduje i wyświetla bounding boxy na podanym obrazie testowym za pomocą wytrenowanego modelu YOLO.
-    """
-    # Wykonujemy predykcję na obrazie testowym za pomocą modelu
-    results = model.predict(path_test_car, device='cpu')
-
-    # Wczytujemy obraz za pomocą OpenCV
-    image = cv2.imread(path_test_car)
-    # Konwertujemy obraz z BGR (domyślny format OpenCV) do RGB (domyślny format matplotlib)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-
-    # Ekstrahujemy bounding boxy i etykiety z wyników predykcji
-    for result in results:
-        for box in result.boxes:
-            # Pobieramy współrzędne bounding boxa
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
-            # Pobieramy wynik pewności predykcji
-            confidence = box.conf[0]
-
-            # Rysujemy bounding box na obrazie
-            cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            # Rysujemy wynik pewności obok bounding boxa
-            cv2.putText(image, f'{confidence*100:.2f}%', (x1, y1 - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
-
-            # Wycinamy bounding box z obrazu dla pytesseract
-            roi = image[y1:y2, x1:x2]
-
-            # Wykonujemy OCR na wyciętym fragmencie
-            text = pytesseract.image_to_string(Image.fromarray(roi))
-            cv2.putText(image, f'{text}', (x1, y1 + 40),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 123, 255), 2)
-            print(f"Detected text: {text}")
-
-    # Wyświetlamy obraz z bounding boxami
-    plt.imshow(image)
-    plt.axis('off')  # Ukrywamy osie
-    plt.show()  # Wyświetlamy obraz
-
-
-# Przewidujemy i wyświetlamy bounding boxy na wybranym obrazie testowym
-predict_and_plot('datasets/cars_license_plate_new/test/images/Cars415.png')

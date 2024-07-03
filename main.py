@@ -17,7 +17,7 @@ def detect_plate(img, text=""):
         plate_img, scaleFactor=1.2, minNeighbors=7
     )
     for (x, y, w, h) in plate_rect:
-        plate = roi[y:y + h, x:x + w, :]
+        plate = roi[y:y + h, x:x + w,:]
         cv2.rectangle(plate_img, (x + 2, y), (x + w - 3, y + h - 5), (51, 181, 155), 3)
     if text != "":
         plate_img = cv2.putText(
@@ -50,7 +50,6 @@ display(plate, "extracted license plate from the image")
 
 def find_contours(dimensions, img):
     cntrs, _ = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
-
     lower_width = dimensions[0]
     upper_width = dimensions[1]
     lower_height = dimensions[2]
@@ -77,11 +76,8 @@ def find_contours(dimensions, img):
             char = img[intY:intY + intHeight, intX:intX + intWidth]
             char = cv2.resize(char, (20, 40))
 
-            cv2.rectangle(
-                ii, (intX, intY), (intWidth + intX, intY + intHeight), (50, 21, 200), 2
-            )
+            cv2.rectangle(ii, (intX, intY), (intWidth + intX, intY + intHeight), (50, 21, 200), 2)
             plt.imshow(ii, cmap="gray")
-
             char = cv2.subtract(255, char)
 
             char_copy[2:42, 2:22] = char

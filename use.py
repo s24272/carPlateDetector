@@ -1,5 +1,4 @@
 import cv2
-import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from PIL import Image
@@ -26,7 +25,7 @@ class_names = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 
 def detect_and_segment(image_path):
-    img = cv2.imread(image_path)
+    img = cv2.imread(image_path) #detection and segmentacion
     output_img, plate = detect_plate(img)
     char_images = segment_characters(plate)
     return char_images

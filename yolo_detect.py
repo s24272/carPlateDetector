@@ -1,53 +1,51 @@
-from ipywidgets import interact, widgets
+from ultralytics import YOLO
+import easyocr
 import cv2
 import matplotlib.pyplot as plt
-from PIL import Image
-import pytesseract
-from ultralytics import YOLO
-from glob import glob
 
 # Wczytaj wytrenowany model
-model = YOLO('yolo_pretrained_model_by300epochs.pt')
+model = YOLO('runs/detect/train24/weights/last.pt')
 
 def predict_and_plot(path_test_car):
-    """
-    Przewiduje i wyświetla bounding boxy na podanym obrazie testowym za pomocą wytrenowanego modelu YOLO.
-    """
-    # Wykonujemy predykcję na obrazie testowym za pomocą modelu
+    # Perform prediction on the test image using the model
     results = model.predict(path_test_car, device='cpu')
-
-    # Wczytujemy obraz za pomocą OpenCV
+    # Load the image using OpenCV
     image = cv2.imread(path_test_car)
-    # Konwertujemy obraz z BGR (domyślny format OpenCV) do RGB (domyślny format matplotlib)
+    # Convert the image from BGR (OpenCV default) to RGB (matplotlib default)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Ekstrahujemy bounding boxy i etykiety z wyników predykcji
+    reader = easyocr.Reader(['en'])
+
+    # Extract the bounding boxes and labels from the results
     for result in results:
         for box in result.boxes:
-            # Pobieramy współrzędne bounding boxa
+            # Get the coordinates of the bounding box
             x1, y1, x2, y2 = map(int, box.xyxy[0])
-            # Pobieramy wynik pewności predykcji
+            # Get the confidence score of the prediction
             confidence = box.conf[0]
 
-            # Rysujemy bounding box na obrazie
+            # Draw the bounding box on the image
             cv2.rectangle(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-            # Rysujemy wynik pewności obok bounding boxa
+            # Draw the confidence score near the bounding box
             cv2.putText(image, f'{confidence*100:.2f}%', (x1, y1 - 10),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 2)
 
-            # Wycinamy bounding box z obrazu dla pytesseract
-            roi = image[y1:y2, x1:x2]
+            # Crop the bounding box from the image for OCR
+            roi = gray_image[y1:y2, x1:x2]
 
-            # Wykonujemy OCR na wyciętym fragmencie
-            text = pytesseract.image_to_string(Image.fromarray(roi))
+            # Perform OCR on the cropped image
+            text = reader.readtext(roi)
+            if len(text) > 0:
+                text = text[0][1]
             cv2.putText(image, f'{text}', (x1, y1 + 40),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 123, 255), 2)
             print(f"Detected text: {text}")
 
-    # Wyświetlamy obraz z bounding boxami
+    # Plot the image with bounding boxes
     plt.imshow(image)
-    plt.axis('off')  # Ukrywamy osie
-    plt.show()  # Wyświetlamy obraz
+    plt.axis('off')  # Hide the axis
+    plt.show()  # Display the image
 
-# Przewidujemy i wyświetlamy bounding boxy na wybranym obrazie testowym
-predict_and_plot('datasets/cars_license_plate_new/test/images/Cars429.png')
+
+predict_and_plot('datasets/cars_license_plate_new/test/images/Cars203.png')
