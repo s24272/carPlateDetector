@@ -4,12 +4,11 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from sklearn.metrics import f1_score
+from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
 plate_cascade = cv2.CascadeClassifier("archive2/indian_license_plate.xml")
-
 
 def detect_plate(img, text=""):
     plate_img = img.copy()
@@ -18,7 +17,6 @@ def detect_plate(img, text=""):
         plate_img, scaleFactor=1.2, minNeighbors=7
     )
     for (x, y, w, h) in plate_rect:
-#        roi_ = roi[y:y + h, x:x + w, :]
         plate = roi[y:y + h, x:x + w, :]
         cv2.rectangle(plate_img, (x + 2, y), (x + w - 3, y + h - 5), (51, 181, 155), 3)
     if text != "":
@@ -35,16 +33,13 @@ def detect_plate(img, text=""):
 
     return plate_img, plate
 
-
 def display(img_, title=""):
     img = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
-#    fig = plt.figure(figsize=(10, 6))
     ax = plt.subplot(111)
     ax.imshow(img)
     plt.axis("off")
     plt.title(title)
     plt.show()
-
 
 img = cv2.imread("archive2/car.jpg")
 display(img, "input image")
@@ -52,7 +47,6 @@ display(img, "input image")
 output_img, plate = detect_plate(img)
 display(output_img, "detected license plate in the input image")
 display(plate, "extracted license plate from the image")
-
 
 def find_contours(dimensions, img):
     cntrs, _ = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -67,7 +61,6 @@ def find_contours(dimensions, img):
     ii = cv2.imread("contour.jpg")
 
     x_cntr_list = []
-#    target_contours = []
     img_res = []
     for cntr in cntrs:
         intX, intY, intWidth, intHeight = cv2.boundingRect(cntr)
@@ -108,7 +101,6 @@ def find_contours(dimensions, img):
 
     return img_res
 
-
 def segment_characters(image):
     img_lp = cv2.resize(image, (333, 75))
     img_gray_lp = cv2.cvtColor(img_lp, cv2.COLOR_BGR2GRAY)
@@ -135,7 +127,6 @@ def segment_characters(image):
 
     return char_list
 
-
 char = segment_characters(plate)
 for i in range(10):
     plt.subplot(1, 10, i + 1)
@@ -157,7 +148,6 @@ train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 
 val_dataset = datasets.ImageFolder(root="archive2/data/data/val", transform=transform)
 val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True)
-
 
 class LicensePlateModel(nn.Module):
     def __init__(self):
@@ -184,13 +174,18 @@ class LicensePlateModel(nn.Module):
         x = self.fc2(x)
         return x
 
-
 model = LicensePlateModel()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=10):
+    train_losses = []
+    val_losses = []
+    val_accuracies = []
+    val_precisions = []
+    val_recalls = []
+    val_f1s = []
 
-def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=20):
     for epoch in range(num_epochs):
         model.train()
         running_loss = 0.0
@@ -201,6 +196,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
+        train_losses.append(running_loss/len(train_loader))
         print(f"Epoch {epoch + 1}, Loss: {running_loss/len(train_loader)}")
 
         model.eval()
@@ -215,8 +211,16 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 preds = torch.argmax(outputs, dim=1)
                 all_labels.extend(labels.cpu().numpy())
                 all_preds.extend(preds.cpu().numpy())
+        val_losses.append(val_loss/len(val_loader))
+        accuracy = accuracy_score(all_labels, all_preds)
+        precision = precision_score(all_labels, all_preds, average="micro")
+        recall = recall_score(all_labels, all_preds, average="micro")
         f1 = f1_score(all_labels, all_preds, average="micro")
-        print(f"Validation Loss: {val_loss/len(val_loader)}, F1 Score: {f1}")
+        val_accuracies.append(accuracy)
+        val_precisions.append(precision)
+        val_recalls.append(recall)
+        val_f1s.append(f1)
+        print(f"Validation Loss: {val_loss/len(val_loader)}, Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}")
 
     # Save the model and optimizer state
     torch.save(
@@ -227,6 +231,40 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         "license_plate_model.pt",
     )
 
+    # Plot the metrics
+    epochs = range(1, num_epochs + 1)
+    plt.figure(figsize=(12, 8))
+    plt.subplot(2, 2, 1)
+    plt.plot(epochs, train_losses, label='Training Loss')
+    plt.plot(epochs, val_losses, label='Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.title('Training and Validation Loss')
+
+    plt.subplot(2, 2, 2)
+    plt.plot(epochs, val_accuracies, label='Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy')
+    plt.legend()
+    plt.title('Validation Accuracy')
+
+    plt.subplot(2, 2, 3)
+    plt.plot(epochs, val_precisions, label='Precision')
+    plt.xlabel('Epochs')
+    plt.ylabel('Precision')
+    plt.legend()
+    plt.title('Validation Precision')
+
+    plt.subplot(2, 2, 4)
+    plt.plot(epochs, val_recalls, label='Recall')
+    plt.xlabel('Epochs')
+    plt.ylabel('Recall')
+    plt.legend()
+    plt.title('Validation Recall')
+
+    plt.tight_layout()
+    plt.show()
 
 train_model(model, train_loader, val_loader, criterion, optimizer)
 

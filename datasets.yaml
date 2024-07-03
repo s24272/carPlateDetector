@@ -5,8 +5,8 @@ train: train/images
 val: val/images
 test: test/images
 
-# number of classes
+# liczba klas
 nc: 1
 
-# class names
+# nazwy klas
 names: ['license_plate']

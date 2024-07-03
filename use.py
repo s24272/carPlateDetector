@@ -6,7 +6,6 @@ from PIL import Image
 from torchvision import transforms
 
 from main import LicensePlateModel, detect_plate, segment_characters
-
 # Load the model and optimizer state
 checkpoint = torch.load("license_plate_model.pt")
 model = LicensePlateModel()
