@@ -164,3 +164,8 @@ To use the models, run the training scripts to train the models on the provided 
 6. **View the video demonstration**:
 
 A video demonstration (`2024-07-03 18-01-43.mkv`) illustrating the functionality of the code in PyCharm can be found in files :)
+
+
+## Conclusion
+
+These visual aids and metrics provide a comprehensive overview of the project’s performance in license plate detection and character recognition tasks. Including them in the README enhances readability and understanding for potential users or collaborators of the project.
