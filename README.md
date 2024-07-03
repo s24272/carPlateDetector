@@ -134,9 +134,16 @@ To use the models, run the training scripts to train the models on the provided 
     ```
 
 2. **Install dependencies using Poetry**:
+   
+   Poetry jest narzędziem do zarządzania zależnościami i wirtualnym środowiskiem Pythona. Upewnij się, że masz zainstalowane Poetry. Jeśli nie, zainstaluj go zgodnie z [oficjalną dokumentacją Poetry](https://python-poetry.org/docs/).
+
+   Po zainstalowaniu Poetry, przejdź do katalogu projektu i dodaj wszystkie wymagane zależności za pomocą polecenia `poetry add`. Poniżej znajduje się lista bibliotek, które są używane w tym projekcie:
+
     ```sh
-    poetry install
+    poetry add opencv-python torch torchvision torchaudio pytesseract matplotlib pandas numpy scikit-learn
     ```
+
+   Jeśli potrzebujesz innych bibliotek, dodaj je również za pomocą `poetry add`.
 
 3. **Set up pre-commit hooks**:
     ```sh
@@ -155,6 +162,6 @@ To use the models, run the training scripts to train the models on the provided 
     poetry run jupyter notebook run.ipynb
     ```
 
-## Video Demonstration
+6. **View the video demonstration**:
 
-A video demonstration (`2024-07-03 18-01-43.mkv`) illustrating the functionality of the code in PyCharm can be found [here](link_to_video).
+A video demonstration (`2024-07-03 18-01-43.mkv`) illustrating the functionality of the code in PyCharm can be found in files :)
