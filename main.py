@@ -8,8 +8,10 @@ from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_sc
 from torch.utils.data import DataLoader
 from torchvision import datasets, transforms
 
+# Load the license plate cascade classifier
 plate_cascade = cv2.CascadeClassifier("archive2/indian_license_plate.xml")
 
+# Function to detect license plates in an image
 def detect_plate(img, text=""):
     plate_img = img.copy()
     roi = img.copy()
@@ -17,7 +19,7 @@ def detect_plate(img, text=""):
         plate_img, scaleFactor=1.2, minNeighbors=7
     )
     for (x, y, w, h) in plate_rect:
-        plate = roi[y:y + h, x:x + w,:]
+        plate = roi[y:y + h, x:x + w, :]
         cv2.rectangle(plate_img, (x + 2, y), (x + w - 3, y + h - 5), (51, 181, 155), 3)
     if text != "":
         plate_img = cv2.putText(
@@ -33,6 +35,7 @@ def detect_plate(img, text=""):
 
     return plate_img, plate
 
+# Function to display an image
 def display(img_, title=""):
     img = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
     ax = plt.subplot(111)
@@ -41,13 +44,16 @@ def display(img_, title=""):
     plt.title(title)
     plt.show()
 
+# Load and display the input image
 img = cv2.imread("archive2/car.jpg")
 display(img, "input image")
 
+# Detect and display the license plate in the image
 output_img, plate = detect_plate(img)
 display(output_img, "detected license plate in the input image")
 display(plate, "extracted license plate from the image")
 
+# Function to find contours of characters in the license plate
 def find_contours(dimensions, img):
     cntrs, _ = cv2.findContours(img.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     lower_width = dimensions[0]
@@ -65,10 +71,10 @@ def find_contours(dimensions, img):
         intX, intY, intWidth, intHeight = cv2.boundingRect(cntr)
 
         if (
-            intWidth > lower_width
-            and intWidth < upper_width
-            and intHeight > lower_height
-            and intHeight < upper_height
+                intWidth > lower_width
+                and intWidth < upper_width
+                and intHeight > lower_height
+                and intHeight < upper_height
         ):
             x_cntr_list.append(intX)
 
@@ -97,6 +103,7 @@ def find_contours(dimensions, img):
 
     return img_res
 
+# Function to segment characters in the license plate
 def segment_characters(image):
     img_lp = cv2.resize(image, (333, 75))
     img_gray_lp = cv2.cvtColor(img_lp, cv2.COLOR_BGR2GRAY)
@@ -123,12 +130,14 @@ def segment_characters(image):
 
     return char_list
 
+# Segment and display characters from the detected license plate
 char = segment_characters(plate)
 for i in range(10):
     plt.subplot(1, 10, i + 1)
     plt.imshow(char[i], cmap="gray")
     plt.axis("off")
 
+# Define the image transformation pipeline
 transform = transforms.Compose(
     [
         transforms.Resize((28, 28)),
@@ -137,14 +146,17 @@ transform = transforms.Compose(
     ]
 )
 
+# Load the training dataset
 train_dataset = datasets.ImageFolder(
     root="archive2/data/data/train", transform=transform
 )
 train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 
+# Load the validation dataset
 val_dataset = datasets.ImageFolder(root="archive2/data/data/val", transform=transform)
 val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True)
 
+# Define the neural network model
 class LicensePlateModel(nn.Module):
     def __init__(self):
         super(LicensePlateModel, self).__init__()
@@ -170,10 +182,12 @@ class LicensePlateModel(nn.Module):
         x = self.fc2(x)
         return x
 
+# Instantiate the model, loss function, and optimizer
 model = LicensePlateModel()
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.0001)
 
+# Function to train the model
 def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=10):
     train_losses = []
     val_losses = []
@@ -192,8 +206,8 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-        train_losses.append(running_loss/len(train_loader))
-        print(f"Epoch {epoch + 1}, Loss: {running_loss/len(train_loader)}")
+        train_losses.append(running_loss / len(train_loader))
+        print(f"Epoch {epoch + 1}, Loss: {running_loss / len(train_loader)}")
 
         model.eval()
         val_loss = 0.0
@@ -207,7 +221,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
                 preds = torch.argmax(outputs, dim=1)
                 all_labels.extend(labels.cpu().numpy())
                 all_preds.extend(preds.cpu().numpy())
-        val_losses.append(val_loss/len(val_loader))
+        val_losses.append(val_loss / len(val_loader))
         accuracy = accuracy_score(all_labels, all_preds)
         precision = precision_score(all_labels, all_preds, average="micro")
         recall = recall_score(all_labels, all_preds, average="micro")
@@ -216,7 +230,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
         val_precisions.append(precision)
         val_recalls.append(recall)
         val_f1s.append(f1)
-        print(f"Validation Loss: {val_loss/len(val_loader)}, Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}")
+        print(f"Validation Loss: {val_loss / len(val_loader)}, Accuracy: {accuracy}, Precision: {precision}, Recall: {recall}, F1 Score: {f1}")
 
     # Save the model and optimizer state
     torch.save(
@@ -262,6 +276,7 @@ def train_model(model, train_loader, val_loader, criterion, optimizer, num_epoch
     plt.tight_layout()
     plt.show()
 
+# Train the model
 train_model(model, train_loader, val_loader, criterion, optimizer)
 
 # Load the model and optimizer state
