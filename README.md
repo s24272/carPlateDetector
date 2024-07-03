@@ -1,5 +1,7 @@
 # License Plate Detector
 
+!(SkanerRejestracji.png)
+
 This project focuses on detecting and recognizing license plates using two approaches: YOLO (You Only Look Once) for object detection and a custom Convolutional Neural Network (CNN) for character recognition. The project uses the `Poetry` tool for dependency management and pre-commit hooks for maintaining code quality.
 
 ## Table of Contents
