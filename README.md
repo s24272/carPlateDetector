@@ -1,6 +1,6 @@
 # License Plate Detector
 
-![Poster](SkanerRejestracji.jpg)
+![Poster](car-plate-detector/images/SkanerRejestracji.jpg)
 
 This project focuses on detecting and recognizing license plates using two approaches: YOLO (You Only Look Once) for object detection and a custom Convolutional Neural Network (CNN) for character recognition. The project uses the `Poetry` tool for dependency management and pre-commit hooks for maintaining code quality.
 
@@ -77,11 +77,11 @@ The YOLO model detection script is located in `yolo_detect.py`. This script uses
 - **mAP50-95**: ~0.75
 
 #### YOLO Model Training Progress
-![YOLO Training Progress](Yolo_wykresy.jpg)
+![YOLO Training Progress](car-plate-detector/images/Yolo_wykresy.jpg)
 
 #### YOLO Model Visualization
-![YOLO Evaluation Metrics](image_1.png)
-![YOLO Evaluation Metrics](image_2.png)
+![YOLO Evaluation Metrics](car-plate-detector/images/image_1.png)
+![YOLO Evaluation Metrics](car-plate-detector/images/image_2.png)
 
 ## CNN Model
 
@@ -112,10 +112,10 @@ The CNN model detection script is located in `run.ipynb`. This Jupyter notebook 
 - **Average F1 Score**: 93.61%
 
 #### CNN Model Training Progress
-![CNN Training Progress](CNN_wykresy.jpg)
+![CNN Training Progress](car-plate-detector/images/CNN_wykresy.jpg)
 
 #### CNN Model Visualization
-![CNN Evaluation Metrics](image_3.png)
+![CNN Evaluation Metrics](car-plate-detector/images/image_3.png)
 
 ### Tools and Environment
 
