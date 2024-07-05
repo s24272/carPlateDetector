@@ -144,8 +144,6 @@ To use the models, run the training scripts to train the models on the provided 
     poetry add opencv-python torch torchvision torchaudio pytesseract matplotlib pandas numpy scikit-learn
     ```
 
-   Jeśli potrzebujesz innych bibliotek, dodaj je również za pomocą `poetry add`.
-
 3. **Set up pre-commit hooks**:
     ```sh
     pip install pre-commit
