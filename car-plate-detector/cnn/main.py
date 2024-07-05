@@ -293,8 +293,6 @@ if __name__ == "__main__":
     model.load_state_dict(torch.load("model/license_plate_model_weights.pt"))
     optimizer.load_state_dict(torch.load("model/license_plate_optimizer.pt"))
 
-    # Set the model to evaluation mode if you are using it for inference
-    model.eval()
 
-    # Set the model to training mode if you want to continue training
+    model.eval()
     # model.train()

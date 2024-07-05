@@ -136,9 +136,9 @@ To use the models, run the training scripts to train the models on the provided 
 
 2. **Install dependencies using Poetry**:
    
-   Poetry jest narzędziem do zarządzania zależnościami i wirtualnym środowiskiem Pythona. Upewnij się, że masz zainstalowane Poetry. Jeśli nie, zainstaluj go zgodnie z [oficjalną dokumentacją Poetry](https://python-poetry.org/docs/).
+    Poetry is a tool for dependency management and virtual environment handling in Python. Make sure you have Poetry installed. If not, install it according to [the official Poetry documentation](https://python-poetry.org/docs/).
 
-   Po zainstalowaniu Poetry, przejdź do katalogu projektu i dodaj wszystkie wymagane zależności za pomocą polecenia `poetry add`. Poniżej znajduje się lista bibliotek, które są używane w tym projekcie:
+    After installing Poetry, navigate to the project directory and add all required dependencies using the poetry add command. Below is a list of libraries that are used in this project:   
 
     ```sh
     poetry add opencv-python torch torchvision torchaudio pytesseract matplotlib pandas numpy scikit-learn

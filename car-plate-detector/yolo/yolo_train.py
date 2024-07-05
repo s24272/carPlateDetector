@@ -41,7 +41,6 @@ xml_files = glob(os.path.join(dataset_path, 'annotations', '*.xml'))
 
 # Process each XML file, sorted by the number in the filename
 for filename in sorted(xml_files, key=the_number_in_the_string):
-    # Parse the XML file
     info = xet.parse(filename)
     root = info.getroot()
 
@@ -69,10 +68,9 @@ for filename in sorted(xml_files, key=the_number_in_the_string):
     labels_dict['img_w'].append(width)
     labels_dict['img_h'].append(height)
 
-# Convert the dictionary to a DataFrame using pandas
+
 alldata = pd.DataFrame(labels_dict)
 
-# Display the first three rows of the DataFrame
 print(alldata.head(3))
 
 # Split the data into training and testing sets
@@ -123,7 +121,6 @@ make_split_folder_in_yolo_format("train", train)
 make_split_folder_in_yolo_format("val", val)
 make_split_folder_in_yolo_format("test", test)
 
-# Define the contents of the datasets.yaml file
 datasets_yaml = '''
 path: cars_license_plate_new
 
@@ -142,7 +139,6 @@ names: ['license_plate']
 with open('datasets.yaml', 'w') as file:
     file.write(datasets_yaml)
 
-# Load the YOLOv9 model
 model = YOLO('model/yolov9s.pt')
 
 # Train the model
@@ -157,10 +153,8 @@ model.train(
 # Find the latest training log directory
 log_dir = max(glob('runs/detect/train*'), key=os.path.getmtime)
 
-# Load training results from the CSV file
 results = pd.read_csv(os.path.join(log_dir, 'results.csv'))
 
-# Remove any unnecessary spaces in column names
 results.columns = results.columns.str.strip()
 
 # Extract epochs and accuracy metrics
