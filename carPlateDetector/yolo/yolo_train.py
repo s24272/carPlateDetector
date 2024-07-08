@@ -151,7 +151,7 @@ model.train(
 )
 
 # Find the latest training log directory
-log_dir = max(glob('runs/detect/train*'), key=os.path.getmtime)
+log_dir = max(glob('../../results/yolo_results/runs/detect/train*'), key=os.path.getmtime)
 
 results = pd.read_csv(os.path.join(log_dir, 'results.csv'))
 
