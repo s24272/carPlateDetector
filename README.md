@@ -151,14 +151,14 @@ To use the models, run the training scripts to train the models on the provided 
 
 4. **Run the training scripts**:
     ```sh
-    poetry run python carPlateDetector/yolo/yolo_train.py
-    poetry run python carPlateDetector/cnn/main.py
+    cd .\carPlateDetector\yolo | poetry run python yolo_train.py
+    cd .\carPlateDetector\cnn | poetry run python main.py
     ```
 
 5. **Run the detection scripts**:
     ```sh
-    poetry run python carPlateDetector/yolo/yolo_detect.py
-    poetry run python carPlateDetector/cnn/run.py
+    cd .\carPlateDetector\yolo | poetry run python yolo_detect.py
+    cd .\carPlateDetector\cnn | poetry run python run.py
     ```
 
 6. **View the video demonstration**:
