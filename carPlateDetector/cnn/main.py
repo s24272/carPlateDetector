@@ -10,7 +10,7 @@ from torchvision import datasets, transforms
 import csv
 
 # Load the license plate cascade classifier
-plate_cascade = cv2.CascadeClassifier("archive2/indian_license_plate.xml")
+plate_cascade = cv2.CascadeClassifier("../../datasets/data_for_cnn/archive2/indian_license_plate.xml")
 
 # Function to detect license plates in an image
 def detect_plate(img, text=""):
@@ -46,7 +46,7 @@ def display(img_, title=""):
     plt.show()
 
 # Load and display the input image
-img = cv2.imread("archive2/car.jpg")
+img = cv2.imread("../../datasets/data_for_cnn/archive2/car.jpg")
 display(img, "input image")
 
 # Detect and display the license plate in the image
@@ -149,12 +149,12 @@ transform = transforms.Compose(
 
 # Load the training dataset
 train_dataset = datasets.ImageFolder(
-    root="archive2/data/data/train", transform=transform
+    root="../../datasets/data_for_cnn/archive2/data/data/train", transform=transform
 )
 train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 
 # Load the validation dataset
-val_dataset = datasets.ImageFolder(root="archive2/data/data/val", transform=transform)
+val_dataset = datasets.ImageFolder(root="../../datasets/data_for_cnn/archive2/data/data/val", transform=transform)
 val_loader = DataLoader(val_dataset, batch_size=1, shuffle=True)
 
 # Define the neural network model

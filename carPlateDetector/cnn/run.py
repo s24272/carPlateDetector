@@ -50,7 +50,7 @@ def classify_characters(char_images, model):
 
 
 # Load and process the image
-char_images = detect_and_segment("../yolo/archive/images/Cars8.png")
+char_images = detect_and_segment("../../datasets/data_for_yolo/archive/images/Cars8.png")
 
 # Classify the characters
 license_plate = classify_characters(char_images, model)
