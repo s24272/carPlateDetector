@@ -165,3 +165,6 @@ To use the models, run the training scripts to train the models on the provided 
 
 A video demonstration illustrating the functionality of the code in PyCharm down below:)
 ![Video Demonstration](images/projectDemonstration.mp4)
+
+
+[projectDemonstration.mp4](images%2FprojectDemonstration.mp4)
