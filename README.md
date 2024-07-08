@@ -165,10 +165,4 @@ To use the models, run the training scripts to train the models on the provided 
 
 A video demonstration illustrating the functionality of the code in PyCharm down below:)
 
-<object width="425" height="350">
-  <param name="movie" value="https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach" />
-  <param name="wmode" value="transparent" />
-  <embed src="https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach"
-         type="application/x-shockwave-flash"
-         wmode="transparent" width="425" height="350" />
-</object>
+[link text]([https://example.com/my-link "link title"](https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach))
