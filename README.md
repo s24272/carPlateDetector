@@ -164,9 +164,11 @@ To use the models, run the training scripts to train the models on the provided 
 6. **View the video demonstration**:
 
 A video demonstration illustrating the functionality of the code in PyCharm down below:)
-![Video Demonstration](images/projectDemonstration.mp4)
 
-
-[projectDemonstration.mp4](images%2FprojectDemonstration.mp4)
-
-[![Watch the video](https://github.com/s24272/carPlateDetector/blob/main/images/projectDemonstration.mp4)](https://github.com/s24272/carPlateDetector/blob/main/images/projectDemonstration.mp4)
+<object width="425" height="350">
+  <param name="movie" value="https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach" />
+  <param name="wmode" value="transparent" />
+  <embed src="https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach"
+         type="application/x-shockwave-flash"
+         wmode="transparent" width="425" height="350" />
+</object>
