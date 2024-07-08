@@ -165,5 +165,5 @@ To use the models, run the training scripts to train the models on the provided 
 
 A video demonstration illustrating the functionality of the code in PyCharm down below:)
 
-[![Watch the video](https://img.youtube.com/vi/_5tFXJQIzi4/0.jpg)](https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach)
+[![Watch the video](https://docs.openvino.ai/2024/_images/vehicle-license-plate-detection-barrier-0106.jpeg)](https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach)
 
