@@ -168,3 +168,5 @@ A video demonstration illustrating the functionality of the code in PyCharm down
 
 
 [projectDemonstration.mp4](images%2FprojectDemonstration.mp4)
+
+[![Watch the video](https://github.com/s24272/carPlateDetector/blob/main/images/projectDemonstration.mp4)](https://github.com/s24272/carPlateDetector/blob/main/images/projectDemonstration.mp4)
