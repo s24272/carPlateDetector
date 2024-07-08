@@ -167,3 +167,14 @@ A video demonstration illustrating the functionality of the code in PyCharm down
 
 [![Watch the video](https://docs.openvino.ai/2024/_images/vehicle-license-plate-detection-barrier-0106.jpeg)](https://www.youtube.com/watch?v=XgktLbXLYvM&ab_channel=NikodemKunach)
 
+
+
+https://github.com/s24272/carPlateDetector/assets/91730808/445b89c9-59f1-459a-9ba7-f4bcaccf4a00
+
+
+
+https://github.com/s24272/carPlateDetector/assets/91730808/71164b58-718c-434b-86cc-3364809316b7
+
+
+
+
