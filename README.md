@@ -1,6 +1,6 @@
 # License Plate Detector
 
-![Poster](car-plate-detector/images/SkanerRejestracji.jpg)
+![Poster](images/SkanerRejestracji.jpg)
 
 This project focuses on detecting and recognizing license plates using two approaches: YOLO (You Only Look Once) for object detection and a custom Convolutional Neural Network (CNN) for character recognition. The project uses the `Poetry` tool for dependency management and pre-commit hooks for maintaining code quality.
 
@@ -77,11 +77,11 @@ The YOLO model detection script is located in `yolo_detect.py`. This script uses
 - **mAP50-95**: ~0.75
 
 #### YOLO Model Training Progress
-![YOLO Training Progress](car-plate-detector/images/Yolo_wykresy.jpg)
+![YOLO Training Progress](images/Yolo_wykresy.jpg)
 
 #### YOLO Model Visualization
-![YOLO Evaluation Metrics](car-plate-detector/images/image_1.png)
-![YOLO Evaluation Metrics](car-plate-detector/images/image_2.png)
+![YOLO Evaluation Metrics](images/image_1.png)
+![YOLO Evaluation Metrics](images/image_2.png)
 
 ## CNN Model
 
@@ -112,10 +112,10 @@ The CNN model detection script is located in `run.ipynb`. This Jupyter notebook 
 - **Average F1 Score**: 93.61%
 
 #### CNN Model Training Progress
-![CNN Training Progress](car-plate-detector/images/CNN_wykresy.jpg)
+![CNN Training Progress](images/CNN_wykresy.jpg)
 
 #### CNN Model Visualization
-![CNN Evaluation Metrics](car-plate-detector/images/image_3.png)
+![CNN Evaluation Metrics](images/image_3.png)
 
 ### Tools and Environment
 
@@ -138,10 +138,10 @@ To use the models, run the training scripts to train the models on the provided 
    
     Poetry is a tool for dependency management and virtual environment handling in Python. Make sure you have Poetry installed. If not, install it according to [the official Poetry documentation](https://python-poetry.org/docs/).
 
-    After installing Poetry, navigate to the project directory and add all required dependencies using the poetry add command. Below is a list of libraries that are used in this project:   
+    After installing Poetry, navigate to the project directory and add all required dependencies using the poetry install command.
 
     ```sh
-    poetry add opencv-python torch torchvision torchaudio pytesseract matplotlib pandas numpy scikit-learn
+    poetry install
     ```
 
 3. **Set up pre-commit hooks**:
@@ -151,16 +151,17 @@ To use the models, run the training scripts to train the models on the provided 
 
 4. **Run the training scripts**:
     ```sh
-    poetry run python yolo_train.py
-    poetry run python main.py
+    poetry run python carPlateDetector/yolo/yolo_train.py
+    poetry run python carPlateDetector/cnn/main.py
     ```
 
 5. **Run the detection scripts**:
     ```sh
-    poetry run python yolo_detect.py
-    poetry run jupyter notebook run.ipynb
+    poetry run python carPlateDetector/yolo/yolo_detect.py
+    poetry run python carPlateDetector/cnn/run.py
     ```
 
 6. **View the video demonstration**:
 
-A video demonstration (`2024-07-03 18-01-43.mkv`) illustrating the functionality of the code in PyCharm can be found in files :)
+A video demonstration illustrating the functionality of the code in PyCharm down below:)
+![Video Demonstration](images/projectDemonstration.mp4)

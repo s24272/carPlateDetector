@@ -1,8 +1,8 @@
 [tool.poetry]
-name = "platedetector"
+name = "carPlateDetector"
 version = "0.1.0"
 description = ""
-authors = ["Damian Maluga <s24272@pjwstk.edu.pl>"]
+authors = ["Damian Maluga <s24272@pjwstk.edu.pl>", "Nikodem Kunach <s25030@pjwstk.edu.pl>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
